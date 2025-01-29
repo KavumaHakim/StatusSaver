@@ -7,14 +7,15 @@ pics = glob("/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*.jpg")
 videos = glob("/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*.mp4")
 ANDROID = glob("/sdcard/*")
 
-def copy_selection(*args):
-	print("Choose What to Copy:")
-	print("1. Pictures")
-	print("2. Videos")
-	print("3. Both")
-	print("4. Exit")
-	global choice 
-	choice = input('Enter choice: ')
+def copy_selection():
+    os.system("clear")
+    print("Choose What to Copy:")
+    print("1. Pictures")
+    print("2. Videos")
+    print("3. Both")
+    print("4. Exit")
+    global choice 
+    choice = input('Enter choice: ')
 
 copy_selection()
 if choice == '4':
@@ -37,7 +38,7 @@ while choice != '4':
 	        print(f'Copying: {i}\n')
 	        os.system(f"cp {i} /sdcard/Statuses/Pics")
 	        sleep(0.3)
-        
+
 	elif choice.lower() == '2':
 	    print("Saving Videos")
 	    sleep(2)

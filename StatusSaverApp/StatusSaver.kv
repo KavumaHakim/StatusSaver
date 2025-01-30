@@ -1,0 +1,51 @@
+#: kivy 2.0.0
+#:import hex kivy.utils.get_color_from_hex
+
+<HomeScreen>:
+	AnchorLayout:
+		anchor_x : 'center' 
+		anchor_y : 'center'
+		padding : 20, 30
+		BoxLayout:
+			orientation : 'vertical'
+			padding : [20, 70]
+			spacing : 40
+			MDCard:
+				size_hint_y : .25
+				md_bg_color : hex('#05b025')
+				FloatLayout:
+					Image:
+						source :'whatsapp-icon.png'
+						size_hint : (.2, .2)
+						pos_hint : {'center_x': .1, 'center_y': .8}
+					Label:
+						text : 'Status Saver'
+						color : 1, 1, 1, 1
+						font_size : 80
+						bold : True
+						pos_hint : {'center_x': .5, 'center_y': .5}
+			MDCard:
+				size_hint_y : .325
+				ripple_behavior : True
+				md_bg_color : hex('#e0e0e0')
+				Image:
+					source : 'video-play-icon.png'
+					size_hint : (.5, .5)
+					pos_hint : {'center_x': .5, 'center_y': .5}
+			MDCard:
+				size_hint_y : .325
+				ripple_behavior : True
+				md_bg_color : hex('#e0e0e0')
+				Image:
+					source : 'green_pic_icon2.png'
+					size_hint : (.5, .5)
+					pos_hint : {'center_x': .5, 'center_y': .5}
+			MDCard:
+				size_hint_y : .1
+				ripple_behavior : True
+				md_bg_color : hex('#05b025')
+				Label:
+					text : 'Open WhatApp'
+					color : 1, 1, 1, 1
+					font_size : 50
+					bold : True

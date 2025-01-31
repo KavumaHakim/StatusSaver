@@ -3,57 +3,108 @@
 
 <HomeScreen>:
 	AnchorLayout:
-		anchor_x : 'center' 
-		anchor_y : 'center'
-		padding : 20, 30
+		anchor_x: 'center' 
+		anchor_y: 'center'
+		padding: 20, 30
 		BoxLayout:
-			orientation : 'vertical'
-			padding : [20, 70]
-			spacing : 40
+			orientation: 'vertical'
+			padding: [20, 70]
+			spacing: 40
 			MDCard:
-				size_hint_y : .25
-				md_bg_color : hex('#05b025')
+				size_hint_y: .25
+				theme_bg_color: 'Custom'
+				md_bg_color: hex('#05b025')
 				FloatLayout:
 					Image:
-						source :'whatsapp-icon.png'
-						size_hint : (.2, .2)
-						pos_hint : {'center_x': .1, 'center_y': .8}
+						source:'whatsapp-icon.png'
+						size_hint: (.2, .2)
+						pos_hint: {'center_x': .1, 'center_y': .8}
 					Label:
-						text : 'Status Saver'
-						color : 1, 1, 1, 1
-						font_size : 80
-						bold : True
-						pos_hint : {'center_x': .5, 'center_y': .5}
+						text: 'Status Saver'
+						color: 1, 1, 1, 1
+						font_size: 80
+						bold: True
+						pos_hint: {'center_x': .5, 'center_y': .5}
 			MDCard:
-				size_hint_y : .325
-				ripple_behavior : True
-				md_bg_color : hex('#e0e0e0')
+				size_hint_y: .325
+				ripple_behavior: True
+				md_bg_color: hex('#e0e0e0')
 				Image:
-					source : 'video-play-icon.png'
-					size_hint : (.5, .5)
-					pos_hint : {'center_x': .5, 'center_y': .5}
+					source: 'video-play-icon.png'
+					size_hint: (.5, .5)
+					pos_hint: {'center_x': .5, 'center_y': .5}
 			MDCard:
-				size_hint_y : .325
-				ripple_behavior : True
-				md_bg_color : hex('#e0e0e0')
+				size_hint_y: .325
+				ripple_behavior: True
+				md_bg_color: hex('#e0e0e0')
 				on_press: root.manager.current = 'images'
 				Image:
-					source : 'green_pic_icon2.png'
-					size_hint : (.5, .5)
-					pos_hint : {'center_x': .5, 'center_y': .5}
+					source: 'green_pic_icon2.png'
+					size_hint: (.5, .5)
+					pos_hint: {'center_x': .5, 'center_y': .5}
 			MDCard:
-				size_hint_y : .1
-				ripple_behavior : True
-				md_bg_color : hex('#05b025')
+				size_hint_y: .1
+				ripple_behavior: True
+				theme_bg_color: 'Custom'
+				md_bg_color: hex('#05b025')
 				Label:
-					text : 'Open WhatApp'
-					color : 1, 1, 1, 1
-					font_size : 50
-					bold : True
+					text: 'Open WhatApp'
+					color: 1, 1, 1, 1
+					font_size: 50
+					bold: True
+
+
 
 <ImageScreen>:
-	Label:
-		text: 'Nothing Here Yet'
-		color: (0, 0, 0, 1)
-		italic: True
-		pos_hint: {'center_x': .5, 'center_y': .5}
+	BoxLayout:
+		orientation: 'vertical'
+		padding: 30
+		spacing: 30
+		MDCard:
+			size_hint: (None, None)
+			height: 70
+			width: 400
+			pos_hint: {'center_x': .5}
+			radius: 40
+			style: 'outlined'
+			theme_bg_color: 'Custom'
+			md_bg_color: (1, 1, 1, 0)
+			MDCard:
+				radius: (35,0, 0, 35)
+				style: 'filled'
+				theme_bg_color: 'Custom'
+				md_bg_color: hex('#05b025')
+				Label:
+					text: 'All'
+					color: (1, 1, 1, 1)
+					bold: True
+			MDCard:
+				radius: (0, 35, 35, 0)
+				style: 'filled'
+				theme_bg_color: 'Custom'
+				md_bg_color: (1, 1, 1, 0)
+				Label:
+					text: 'Recent'
+					color: hex('#05b025')
+					bold: True
+		ScrollView:
+			do_scroll_x: False
+			BoxLayout:
+				orientation: 'vertical'
+				padding: (15, 30)
+				spacing: 30
+				size_hint_y: None
+				pos_hint: {'center_x': .5, 'center_y': .5}
+				height: self.minimum_height
+				MDCard:
+					size_hint_y: None
+					height: 230
+				MDCard:
+					size_hint_y: None
+					height: 230
+				MDCard:
+					size_hint_y: None
+					height: 230
+				MDCard:
+					size_hint_y: None
+					height: 230

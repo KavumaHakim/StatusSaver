@@ -16,7 +16,7 @@ class ImageScreen(Screen):
 	pass
 
 
-class MyApp(MDApp):
+class StatusSaverApp(MDApp):
 	def build(self):
 		Builder.load_file('StatusSaver.kv')
 		Window.clearcolor = (1, 1, 1, 1)
@@ -30,4 +30,4 @@ class MyApp(MDApp):
 
 
 if __name__ == '__main__':
-	MyApp().run()
+	StatusSaverApp().run()

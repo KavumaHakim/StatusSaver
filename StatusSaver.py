@@ -8,14 +8,14 @@ videos = glob("/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*.mp4
 ANDROID = glob("/sdcard/*")
 
 def copy_selection():
-    os.system("clear")
-    print("Choose What to Copy:")
-    print("1. Pictures")
-    print("2. Videos")
-    print("3. Both")
-    print("4. Exit")
-    global choice 
-    choice = input('Enter choice: ')
+	os.system("clear")
+	print("Choose What to Copy:")
+	print("1. Pictures")
+	print("2. Videos")
+	print("3. Both")
+	print("4. Exit")
+	global choice 
+	choice = input('Enter choice: ')
 
 copy_selection()
 if choice == '4':
@@ -32,32 +32,32 @@ while choice != '4':
 	sleep(3)
 
 	if choice.lower() == '1':
-	    print("Saving Pictures")
-    
-	    for i in pics:
-	        print(f'Copying: {i}\n')
-	        os.system(f"cp {i} /sdcard/Statuses/Pics")
-	        sleep(0.3)
+		print("Saving Pictures")
+
+		for i in pics:
+			print(f'Copying: {i}\n')
+			os.system(f"cp {i} /sdcard/Statuses/Pics")
+			sleep(0.3)
 
 	elif choice.lower() == '2':
-	    print("Saving Videos")
-	    sleep(2)
-	    
-	    for i in videos:
-	        print(f'Copying: {i}\n')
-	        os.system(f"cp {i} /sdcard/Statuses/Videos")
-	        sleep(0.3)
+		print("Saving Videos")
+		sleep(2)
+
+		for i in videos:
+			print(f'Copying: {i}\n')
+			os.system(f"cp {i} /sdcard/Statuses/Videos")
+			sleep(0.3)
 
 	elif choice.lower() == '3':
-	    print("Saving both Videos and Pictures")
-	    sleep(2)
-	    
-	    for i in pics:
-	        print(f'Copying: {i}\n')
-	        os.system(f"cp {i} /sdcard/Statuses/Pics")
-	    for i in videos:
-	        print(f'Copying: {i}\n')
-	        os.system(f"cp {i} /sdcard/Statuses/Videos")
+		print("Saving both Videos and Pictures")
+		sleep(2)
+
+		for i in pics:
+			print(f'Copying: {i}\n')
+			os.system(f"cp {i} /sdcard/Statuses/Pics")
+		for i in videos:
+			print(f'Copying: {i}\n')
+			os.system(f"cp {i} /sdcard/Statuses/Videos")
 
 	elif choice.lower() == '4':
 		print('Thank you for using Status Saver.')

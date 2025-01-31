@@ -36,6 +36,7 @@
 				size_hint_y : .325
 				ripple_behavior : True
 				md_bg_color : hex('#e0e0e0')
+				on_press: root.manager.current = 'images'
 				Image:
 					source : 'green_pic_icon2.png'
 					size_hint : (.5, .5)
@@ -49,3 +50,10 @@
 					color : 1, 1, 1, 1
 					font_size : 50
 					bold : True
+
+<ImageScreen>:
+	Label:
+		text: 'Nothing Here Yet'
+		color: (0, 0, 0, 1)
+		italic: True
+		pos_hint: {'center_x': .5, 'center_y': .5}

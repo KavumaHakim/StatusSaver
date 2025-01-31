@@ -12,22 +12,22 @@ class MyScreenManager(ScreenManager):
 class HomeScreen(Screen):
 	pass
 
-class IntroductionScreen(Screen):
+class ImageScreen(Screen):
 	pass
 
 
-class MyApp(MDApp):
+class StatusSaverApp(MDApp):
 	def build(self):
 		Builder.load_file('StatusSaver.kv')
 		Window.clearcolor = (1, 1, 1, 1)
 		my_manager = MyScreenManager()
 		home_screen = HomeScreen(name = 'home') 
-		introduction_screen = IntroductionScreen(name = 'introductionscreen')
+		image_screen = ImageScreen(name = 'images')
 		my_manager.add_widget(home_screen)
-		my_manager.add_widget(introduction_screen)
+		my_manager.add_widget(image_screen)
 		return my_manager
 
 
 
 if __name__ == '__main__':
-	MyApp().run()
+	StatusSaverApp().run()

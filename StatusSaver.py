@@ -10,14 +10,14 @@ PICS = "/storage/emulated/0/Statuses/Pics"
 VIDS = "/storage/emulated/0/Statuses/Videos"
 
 def copy_selection():
-    os.system("clear")
-    print("Choose What to Copy:")
-    print("1. Pictures")
-    print("2. Videos")
-    print("3. Both")
-    print("4. Exit")
-    global choice 
-    choice = input('Enter choice: ')
+	os.system("clear")
+	print("Choose What to Copy:")
+	print("1. Pictures")
+	print("2. Videos")
+	print("3. Both")
+	print("4. Exit")
+	global choice 
+	choice = input('Enter choice: ')
 
 copy_selection()
 if choice == '4':

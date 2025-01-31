@@ -37,7 +37,7 @@
 				size_hint_y: .325
 				ripple_behavior: True
 				md_bg_color: hex('#e0e0e0')
-				on_press: root.manager.current = 'images'
+				on_press: root.picture()
 				Image:
 					source: 'green_pic_icon2.png'
 					size_hint: (.5, .5)
@@ -56,13 +56,14 @@
 
 
 <ImageScreen>:
+	id: images
 	BoxLayout:
 		orientation: 'vertical'
 		padding: 30
 		spacing: 30
 		MDCard:
 			size_hint: (None, None)
-			height: 70
+			height: 80
 			width: 400
 			pos_hint: {'center_x': .5}
 			radius: 40
@@ -70,7 +71,7 @@
 			theme_bg_color: 'Custom'
 			md_bg_color: (1, 1, 1, 0)
 			MDCard:
-				radius: (35,0, 0, 35)
+				radius: (40, 0, 0, 40)
 				style: 'filled'
 				theme_bg_color: 'Custom'
 				md_bg_color: hex('#05b025')
@@ -79,7 +80,7 @@
 					color: (1, 1, 1, 1)
 					bold: True
 			MDCard:
-				radius: (0, 35, 35, 0)
+				radius: (0, 40, 40, 0)
 				style: 'filled'
 				theme_bg_color: 'Custom'
 				md_bg_color: (1, 1, 1, 0)
@@ -88,9 +89,11 @@
 					color: hex('#05b025')
 					bold: True
 		RecycleView:
+			id: view_port
 			do_scroll_x: False
-			BoxLayout:
-				orientation: 'vertical'
+			GridLayout:
+				id: layout
+				cols: 2
 				padding: (15, 30)
 				spacing: 30
 				size_hint_y: None
@@ -103,10 +106,21 @@
 				ImageCard:
 
 
+<MyScreenManager>:
+	HomeScreen:
+		id: home
+		name: 'home'
+	ImageScreen:
+		id: images
+		name: 'images'
 
-<ImageCard@MDCard>:
+
+<ImageCard>:
 	size_hint_y: None
 	height: 300
 	style: 'filled'
 	theme_bg_color: 'Custom'
 	md_bg_color: (0, 1, 0, .2)
+	Image:
+		source: 'sample_image.jpg'
+		pos_hint: {'center_x': .5, 'center_y': .5}

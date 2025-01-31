@@ -8,6 +8,8 @@ from tqdm import tqdm
 ANDROID = glob("/storage/emulated/0/*")
 PICS = "/storage/emulated/0/Statuses/Pics"
 VIDS = "/storage/emulated/0/Statuses/Videos"
+videos = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
+pics = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
 
 def copy_selection():
 	os.system("clear")
@@ -31,10 +33,9 @@ while choice != '4':
 		os.makedirs("/sdcard/Statuses")
 		os.makedirs("/sdcard/Statuses/Pics")
 		os.makedirs("/sdcard/Statuses/Videos")
-	sleep(3)
+	sleep(2)
 
 	if choice.lower() == '1':
-		pics = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
 		print("Saving Pictures")
 		for i in tqdm(pics):
 			date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
@@ -45,12 +46,12 @@ while choice != '4':
 				picture = f.read()
 			with open(new_file_path, "wb") as f:
 				f.write(picture)
-			sleep(0.3)
+			sleep(0.2)
 
 	elif choice.lower() == '2':
 		print("Saving Videos")
-		videos = tqdm(glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4'))
-		for i in videos:
+		
+		for i in tqdm(videos):
 			date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
 			extension = os.path.splitext(i)[1]
 			new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
@@ -59,15 +60,12 @@ while choice != '4':
 				video = f.read()
 			with open(new_file_path, "wb") as f:
 				f.write(video)
-			sleep(0.3)
+			sleep(0.2)
 
 	elif choice.lower() == '3':
 		print("Saving both Videos and Pictures")
-		videos = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
-		pics = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
 		all_ = tqdm(videos + pics)
-
-		sleep(2)
+		sleep(1)
 		for i in all_:
 			date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
 			extension = os.path.splitext(i)[1]

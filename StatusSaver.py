@@ -11,9 +11,27 @@ VIDS = "/storage/emulated/0/Statuses/Videos"
 videos = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
 pics = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
 
+banner = '''
+░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
+██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
+╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
+░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
+██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
+╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
+
+░██████╗ ░█████╗░ ██╗░░░██╗ ███████╗ ██████╗░
+██╔════╝ ██╔══██╗ ██║░░░██║ ██╔════╝ ██╔══██╗
+╚█████╗░ ███████║ ╚██╗░██╔╝ █████╗░░ ██████╔╝
+░╚═══██╗ ██╔══██║ ░╚████╔╝░ ██╔══╝░░ ██╔══██╗
+██████╔╝ ██║░░██║ ░░╚██╔╝░░ ███████╗ ██║░░██║
+╚═════╝░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ╚══════╝ ╚═╝░░╚═╝
+'''
+
+
 def copy_selection():
 	os.system("clear")
-	print("Choose What to Copy:")
+	print(banner)
+	print("Choose What Statuses to save:")
 	print("1. Pictures")
 	print("2. Videos")
 	print("3. Both")

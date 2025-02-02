@@ -82,12 +82,11 @@ while choice != '4':
 
 	elif choice.lower() == '4':
 		print('Thank you for using Status Saver.')
-	# TODO: Have to add a loop, that repeats these lines to avoid repeat copying statuses on invalid input
+	
 	print('\nWhat would you like to do next?')
 	print('1. Exit')
 	print('2. Copy more items')
 	selection = input('Your choice: ')
-
 	if selection.lower() == '1':
 		choice = '4'
 	elif selection.lower() == '2':

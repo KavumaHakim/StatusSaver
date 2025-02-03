@@ -7,12 +7,12 @@ from tqdm import tqdm
 
 class Status:
     banner = '''
-        ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
-        ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
-        ╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
-        ░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
-        ██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
-        ╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
+     ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
+     ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
+     ╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
+     ░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
+     ██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
+     ╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
 
         ░██████╗ ░█████╗░ ██╗░░░██╗ ███████╗ ██████╗░
         ██╔════╝ ██╔══██╗ ██║░░░██║ ██╔════╝ ██╔══██╗
@@ -39,7 +39,7 @@ class Status:
             os.makedirs("/sdcard/Statuses/Pics")
             os.makedirs("/sdcard/Statuses/Videos")
     def save_pics(self):
-	    for i in tqdm(self.pics):
+	    for i in tqdm(self.pics, colour="GREEN"):
 	    	date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
 	    	extension = os.path.splitext(i)[1]
 	    	new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
@@ -49,7 +49,7 @@ class Status:
 	    	with open(new_file_path, "wb") as f:
 	    		f.write(picture)
     def save_video(self):
-        for i in tqdm(self.videos):
+        for i in tqdm(self.videos, colour="RED"):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
             new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
@@ -60,7 +60,7 @@ class Status:
             	f.write(video)
 
     def save_both(self):
-        all_ = tqdm(self.videos + self.pics)
+        all_ = tqdm(self.videos + self.pics, colour="MAGENTA")
         for i in all_:
         	date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
         	extension = os.path.splitext(i)[1]
@@ -74,7 +74,7 @@ class Status:
         	with open(new_file_path, "wb") as f:
         		f.write(file)
     def delete_old(self):
-		pass
+        pass
 		# TODO: implement this method
 	    # _old = 7
 	    # for i in tqdm(self.videos + self.pics):
@@ -95,19 +95,22 @@ def main():
     choice = input('Enter choice: ')
     while True:
         if choice == '1':
+            print('Saving Pics')
             Status().save_pics()
             break
         elif choice == '2':
+            print('Saving videos')
             Status().save_video()
             break
         elif choice == '3':
+            print('Saving all')
             Status().save_both()
             break
         elif choice == '4':
             exit("Thank you for using Status Saver!")
         else:
             print("Invalid Input!!")
-
+            break
 
 
 if __name__ == "__main__":

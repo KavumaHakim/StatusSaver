@@ -7,12 +7,12 @@ from tqdm import tqdm
 
 class Status:
     banner = '''
- ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
- ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
- ╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
- ░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
- ██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
- ╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
+░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
+██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
+╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
+░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
+██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
+╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
 
         ░██████╗ ░█████╗░ ██╗░░░██╗ ███████╗ ██████╗░
         ██╔════╝ ██╔══██╗ ██║░░░██║ ██╔════╝ ██╔══██╗
@@ -39,47 +39,50 @@ class Status:
             os.makedirs("/sdcard/Statuses/Pics")
             os.makedirs("/sdcard/Statuses/Videos")
     def save_pics(self):
-	    for i in tqdm(self.pics, colour="GREEN"):
-	    	date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
-	    	extension = os.path.splitext(i)[1]
-	    	new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
-	    	new_file_path = os.path.join(self.PICS, new_name)
-	    	with open(i, 'rb') as f:
-	    		picture = f.read()
-	    	with open(new_file_path, "wb") as f:
-	    		f.write(picture)
+        for i in tqdm(self.pics, colour="GREEN", desc="Saving Pictures", unit="pics", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
+            date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
+            extension = os.path.splitext(i)[1]
+            new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
+            new_file_path = os.path.join(self.PICS, new_name)
+            with open(i, 'rb') as f:
+                picture = f.read()
+            with open(new_file_path, "wb") as f:
+                f.write(picture)
+            sleep(0.5)
     def save_video(self):
-        for i in tqdm(self.videos, colour="RED"):
+        for i in tqdm(self.videos, colour="RED", desc="Saving Videos", unit="vids", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
             new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
             new_file_path = os.path.join(self.VIDS, new_name)
             with open(i, 'rb') as f:
-            	video = f.read()
+                video = f.read()
             with open(new_file_path, "wb") as f:
-            	f.write(video)
+                f.write(video)
+            sleep(0.5)
 
     def save_both(self):
-        all_ = tqdm(self.videos + self.pics, colour="MAGENTA")
+        all_ = tqdm(self.videos + self.pics, colour="MAGENTA", desc="Saving all", unit="files", unit_scale=True, unit_divisor=1024, dynamic_ncols=True)
         for i in all_:
-        	date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
-        	extension = os.path.splitext(i)[1]
-        	new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
-        	if extension == ".mp4":
-        		new_file_path = os.path.join(self.VIDS, new_name)
-        	elif extension == ".jpg":
-        		new_file_path = os.path.join(self.PICS, new_name)
-        	with open(i, 'rb') as f:
-        		file = f.read()
-        	with open(new_file_path, "wb") as f:
-        		f.write(file)
+            date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
+            extension = os.path.splitext(i)[1]
+            new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
+            if extension == ".mp4":
+                new_file_path = os.path.join(self.VIDS, new_name)
+            elif extension == ".jpg":
+                new_file_path = os.path.join(self.PICS, new_name)
+            with open(i, 'rb') as f:
+                file = f.read()
+            with open(new_file_path, "wb") as f:
+                f.write(file)
+        sleep(0.2)
     def delete_old(self):
         pass
-		# TODO: implement this method
-	    # _old = 7
-	    # for i in tqdm(self.videos + self.pics):
-		#     if datetime.datetime.now().strftime("%Y-%m-%d") - datetime.datetime.fromtimestamp(os.path.getmtime(i)).strftime("%Y-%m-%d") >= _old:
-		# 	    print("Old")
+        # TODO: implement this method
+        # _old = 7
+        # for i in tqdm(self.videos + self.pics):
+        #     if datetime.datetime.now().strftime("%Y-%m-%d") - datetime.datetime.fromtimestamp(os.path.getmtime(i)).strftime("%Y-%m-%d") >= _old:
+        #         print("Old")
 
 
 def main():

@@ -42,7 +42,7 @@ class Status:
         for i in tqdm(self.pics, colour="GREEN", desc="Saving Pictures", unit="pics", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
-            new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
+            new_name = f"{date_made.strftime('%Y-%m-%d %H:%M:%S')}{extension}"
             new_file_path = os.path.join(self.PICS, new_name)
             with open(i, 'rb') as f:
                 picture = f.read()
@@ -53,7 +53,7 @@ class Status:
         for i in tqdm(self.videos, colour="RED", desc="Saving Videos", unit="vids", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
-            new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
+            new_name = f"{date_made.strftime('%Y-%m-%d %H:%M:%S')}{extension}"
             new_file_path = os.path.join(self.VIDS, new_name)
             with open(i, 'rb') as f:
                 video = f.read()
@@ -66,7 +66,7 @@ class Status:
         for i in all_:
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
-            new_name = f"{date_made.strftime("%Y-%m-%d %H:%M:%S")}{extension}"
+            new_name = f"{date_made.strftime('%Y-%m-%d %H:%M:%S')}{extension}"
             if extension == ".mp4":
                 new_file_path = os.path.join(self.VIDS, new_name)
             elif extension == ".jpg":

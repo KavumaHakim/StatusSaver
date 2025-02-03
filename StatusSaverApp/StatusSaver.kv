@@ -56,7 +56,6 @@
 
 
 <ImageScreen>:
-	id: images
 	BoxLayout:
 		orientation: 'vertical'
 		padding: 30
@@ -85,7 +84,7 @@
 				theme_bg_color: 'Custom'
 				md_bg_color: (1, 1, 1, 0)
 				Label:
-					text: 'Recent'
+					text: 'Saved'
 					color: hex('#05b025')
 					bold: True
 		RecycleView:
@@ -99,20 +98,15 @@
 				size_hint_y: None
 				pos_hint: {'center_x': .5, 'center_y': .5}
 				height: self.minimum_height
-				ImageCard:
-				ImageCard:
-				ImageCard:
-				ImageCard:
-				ImageCard:
 
 
-<MyScreenManager>:
-	HomeScreen:
-		id: home
-		name: 'home'
-	ImageScreen:
-		id: images
-		name: 'images'
+# <MyScreenManager>:
+# 	HomeScreen:
+# 		# id: home_screen
+# 		name: 'home'
+# 	ImageScreen:
+# 		# id: images
+# 		name: 'image_screen'
 
 
 <ImageCard>:
@@ -120,7 +114,4 @@
 	height: 300
 	style: 'filled'
 	theme_bg_color: 'Custom'
-	md_bg_color: (0, 1, 0, .2)
-	Image:
-		source: 'sample_image.jpg'
-		pos_hint: {'center_x': .5, 'center_y': .5}
+	md_bg_color: (0, 1, 0, .1)

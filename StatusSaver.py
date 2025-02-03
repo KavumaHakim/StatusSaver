@@ -7,12 +7,12 @@ from tqdm import tqdm
 
 class Status:
     banner = '''
-     ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
-     ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
-     ╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
-     ░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
-     ██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
-     ╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
+ ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
+ ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
+ ╚█████╗░ ░░░██║░░░ ███████║ ░░░██║░░░ ██║░░░██║ ╚█████╗░
+ ░╚═══██╗ ░░░██║░░░ ██╔══██║ ░░░██║░░░ ██║░░░██║ ░╚═══██╗
+ ██████╔╝ ░░░██║░░░ ██║░░██║ ░░░██║░░░ ╚██████╔╝ ██████╔╝
+ ╚═════╝░ ░░░╚═╝░░░ ╚═╝░░╚═╝ ░░░╚═╝░░░ ░╚═════╝░ ╚═════╝░ 
 
         ░██████╗ ░█████╗░ ██╗░░░██╗ ███████╗ ██████╗░
         ██╔════╝ ██╔══██╗ ██║░░░██║ ██╔════╝ ██╔══██╗
@@ -92,26 +92,30 @@ def main():
     print("4. Exit")
     global choice 
     Status().check_folders()
-    choice = input('Enter choice: ')
-    while True:
+    n = 1
+    while n:
+        choice = input('Enter choice: ')
         if choice == '1':
             print('Saving Pics')
             Status().save_pics()
-            break
+            n = 0
         elif choice == '2':
             print('Saving videos')
             Status().save_video()
-            break
+            n = 0
         elif choice == '3':
             print('Saving all')
             Status().save_both()
-            break
+            n = 0
         elif choice == '4':
-            exit("Thank you for using Status Saver!")
+            exit('Thank you for using Status saver')
         else:
             print("Invalid Input!!")
-            break
-
+            continue
+    else:
+        print('Thank you for Using status saver')
+        if input('Save sth else? y/n > ').lower() == 'y':
+            main()
 
 if __name__ == "__main__":
     main()

@@ -39,7 +39,7 @@ class Status:
             os.makedirs("/sdcard/Statuses/Pics")
             os.makedirs("/sdcard/Statuses/Videos")
     def save_pics(self):
-        for i in tqdm(self.pics, colour="GREEN", desc="Saving Pictures", unit="pics", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
+        for i in tqdm(self.pics, colour="GREEN", desc="Pics", unit="pics", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
             new_name = f"{date_made.strftime('%Y-%m-%d %H:%M:%S')}{extension}"
@@ -50,7 +50,7 @@ class Status:
                 f.write(picture)
             sleep(0.5)
     def save_video(self):
-        for i in tqdm(self.videos, colour="RED", desc="Saving Videos", unit="vids", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
+        for i in tqdm(self.videos, colour="RED", desc="Vids", unit="vids", unit_scale=True, unit_divisor=1024, dynamic_ncols=True):
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]
             new_name = f"{date_made.strftime('%Y-%m-%d %H:%M:%S')}{extension}"
@@ -62,7 +62,7 @@ class Status:
             sleep(0.5)
 
     def save_both(self):
-        all_ = tqdm(self.videos + self.pics, colour="MAGENTA", desc="Saving all", unit="files", unit_scale=True, unit_divisor=1024, dynamic_ncols=True)
+        all_ = tqdm(self.videos + self.pics, colour="MAGENTA", desc="all", unit="files", unit_scale=True, unit_divisor=1024, dynamic_ncols=True)
         for i in all_:
             date_made = datetime.datetime.fromtimestamp(os.path.getmtime(i))
             extension = os.path.splitext(i)[1]

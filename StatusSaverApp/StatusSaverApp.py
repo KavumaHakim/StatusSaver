@@ -1,6 +1,9 @@
+from kivy.uix.screenmanager import FallOutTransition
+from kivy.uix.screenmanager import RiseInTransition
 from kivy.uix.image import Image
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
+# from kivymd.uix.button import MDButton
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window 
 from kivy.lang import Builder
@@ -29,7 +32,16 @@ class HomeScreen(Screen):
 
 
 class ImageScreen(Screen):
-	pass
+	def expand(self, src):
+		image_view = self.manager.get_screen('image_view')
+		image_view.ids['view_img'].source = src
+		self.manager.transition = RiseInTransition()
+		self.manager.current = 'image_view'
+
+class ImageViewer(Screen):
+	def contract(self):
+		self.manager.transition = FallOutTransition()
+		self.manager.current = 'image_screen'
 
 class ImageCard(MDCard):
 	pass
@@ -41,8 +53,11 @@ class StatusSaverApp(MDApp):
 		my_manager = MyScreenManager()
 		home_screen = HomeScreen(name = 'home')
 		image_screen = ImageScreen(name = 'image_screen')
+		image_view = ImageViewer(name = 'image_view')
 		my_manager.add_widget(home_screen)
 		my_manager.add_widget(image_screen)
+		my_manager.add_widget(image_view)
+		my_manager.current = 'home'
 		return my_manager
 
 

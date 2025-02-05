@@ -3,10 +3,10 @@ from kivy.uix.screenmanager import RiseInTransition
 from kivy.uix.image import Image
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
-# from kivymd.uix.button import MDButton
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window 
 from kivy.lang import Builder
+from glob import glob
 
 
 image_paths = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')

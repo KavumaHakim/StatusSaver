@@ -9,10 +9,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 
 
-image_paths = []
-for i in range(10):
-	image_paths.append('sample_image.jpg')
-
+image_paths = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
 
 class MyScreenManager(ScreenManager):
 	pass

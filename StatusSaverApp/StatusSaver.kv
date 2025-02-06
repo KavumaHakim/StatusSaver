@@ -60,33 +60,27 @@
 		orientation: 'vertical'
 		padding: 30
 		spacing: 30
-		MDCard:
-			size_hint: (None, None)
+		MDSegmentedButton:
+			multiselect: False
+			type: 'large'
+			size_hint_x: .7
+			size_hint_y: None
 			height: 80
-			width: 400
 			pos_hint: {'center_x': .5}
-			radius: 40
-			style: 'outlined'
-			theme_bg_color: 'Custom'
-			md_bg_color: (1, 1, 1, 0)
-			MDCard:
-				radius: (40, 0, 0, 40)
-				style: 'filled'
-				theme_bg_color: 'Custom'
-				md_bg_color: hex('#05b025')
-				Label:
+			opening_icon_duration: 0
+			hiding_icon_duration: 0
+			MDSegmentedButtonItem:
+				selected_color: hex('#05b025')
+				radius: [30, 0, 0, 30]
+				on_state: root.change_content('all_tab')
+				MDSegmentButtonLabel:
 					text: 'All'
-					color: (1, 1, 1, 1)
-					bold: True
-			MDCard:
-				radius: (0, 40, 40, 0)
-				style: 'filled'
-				theme_bg_color: 'Custom'
-				md_bg_color: (1, 1, 1, 0)
-				Label:
+			MDSegmentedButtonItem:
+				selected_color: hex('#05b025')
+				radius: [0, 30, 30, 0]
+				on_state: root.change_content('saved_tab')
+				MDSegmentButtonLabel:
 					text: 'Saved'
-					color: hex('#05b025')
-					bold: True
 		RecycleView:
 			id: view_port
 			do_scroll_x: False

@@ -63,24 +63,43 @@
 		MDSegmentedButton:
 			multiselect: False
 			type: 'large'
-			size_hint_x: .7
+			size_hint_x: .6
 			size_hint_y: None
 			height: 80
 			pos_hint: {'center_x': .5}
 			opening_icon_duration: 0
 			hiding_icon_duration: 0
-			MDSegmentedButtonItem:
+			CustomSegment:
 				selected_color: hex('#05b025')
 				radius: [30, 0, 0, 30]
-				on_state: root.change_content('all_tab')
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.all.color = hex('#ffffff')
+					root.ids.saved.color = hex('#05b025')
+					root.change_content('all_tab')
 				MDSegmentButtonLabel:
+					id: all
 					text: 'All'
-			MDSegmentedButtonItem:
+					bold: True
+					selected_icon: ""
+					theme_text_color: 'Custom'
+					color: hex('#05b025')
+			CustomSegment:
 				selected_color: hex('#05b025')
 				radius: [0, 30, 30, 0]
-				on_state: root.change_content('saved_tab')
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.saved.color = hex('#ffffff')
+					root.ids.all.color = hex('#05b025')
+					root.change_content('saved_tab')
 				MDSegmentButtonLabel:
+					id: saved
 					text: 'Saved'
+					bold: True
+					theme_text_color: 'Custom'
+					color: hex('#05b025')
 		RecycleView:
 			id: view_port
 			do_scroll_x: False

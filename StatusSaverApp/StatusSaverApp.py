@@ -8,12 +8,8 @@ from kivy.lang import Builder
 from glob import glob
 
 # '''Change this back before push'''
-# image_paths_all = []
-# image_paths_saved = []
-# for i in range(10):
-# 	image_paths_all.append('sample_image.jpg')
-# for i in range(10):
-# 	image_paths_saved.append('video-play-icon.png')
+# image_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.jpg')
+# image_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Pics/*.jpg')
 
 # -----READ ME------- #
 #Leave the above declractions in the code since I need them to test the UI in my computer
@@ -28,16 +24,8 @@ class MyScreenManager(ScreenManager):
 
 class HomeScreen(Screen):
 	def picture(self):
-		# self.load_images()
 		self.manager.current = 'image_screen'
 
-	# def load_images(self, image_path=image_paths_all):
-	# 	image_screen = self.manager.get_screen('image_screen')  # Get ImageScreen
-	# 	for image in image_path:
-	# 		preview = ImageCard()
-	# 		img = Image(source=image, pos_hint={'center_x': .5, 'center_y': .5})
-	# 		preview.add_widget(img)
-	# 		image_screen.ids.layout.add_widget(preview)  # Use ImageScreen's layout
 
 class ImageScreen(Screen):
 	def expand(self, src):
@@ -45,9 +33,12 @@ class ImageScreen(Screen):
 		image_view.ids.view_img.source = src
 		self.manager.transition = RiseInTransition()
 		self.manager.current = 'image_view'
+		global idx
+		idx = image_path.index(src)
 	def change_content(self, tab):
 		content_grid = self.ids.layout
 		content_grid.clear_widgets()
+		global image_path
 		if tab == 'all_tab':
 			image_path = image_paths_all
 		elif tab == 'saved_tab':
@@ -64,6 +55,18 @@ class ImageViewer(Screen):
 	def contract(self):
 		self.manager.transition = FallOutTransition()
 		self.manager.current = 'image_screen'
+	def next_img(self):
+		global idx
+		idx += 1
+		if idx >= len(image_path):
+			idx = len(image_path)-1
+		self.ids.view_img.source = image_path[idx]
+	def prev_img(self):
+		global idx
+		idx -= 1
+		if idx < 0:
+			idx = 0
+		self.ids.view_img.source = image_path[idx]
 
 
 class CustomSegment(MDSegmentedButtonItem):

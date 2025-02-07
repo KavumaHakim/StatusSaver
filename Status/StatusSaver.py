@@ -34,7 +34,7 @@ class Status:
                 os.makedirs("/sdcard/Statuses/Videos")
             Status(file_type, path)
 
-if __name__ == "__main--":
+if __name__ == "__main__":
     print("Hola!, Try running the terminal version instead!")
 
     

@@ -1,4 +1,3 @@
-#!/data/data/com.termux/files/usr/bin/python
 from glob import glob
 import os
 import datetime
@@ -36,6 +35,6 @@ class Status:
             Status(file_type, path)
 
 if __name__ == "__main--":
-    print("Hola!, Try running the terminal versin instead!")
+    print("Hola!, Try running the terminal version instead!")
 
     

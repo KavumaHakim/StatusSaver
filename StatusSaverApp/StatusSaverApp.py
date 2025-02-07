@@ -2,9 +2,11 @@ from kivy.uix.screenmanager import ScreenManager, Screen, RiseInTransition, Fall
 from kivymd.uix.segmentedbutton import MDSegmentedButtonItem
 from kivymd.uix.card import MDCard
 from kivy.uix.image import Image
-from kivymd.app import MDApp
-from kivy.core.window import Window 
+from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.clock import Clock
+from kivymd.app import MDApp
+import asynckivy
 from glob import glob
 
 # '''Change this back before push'''
@@ -28,6 +30,7 @@ class HomeScreen(Screen):
 
 
 class ImageScreen(Screen):
+
 	def expand(self, src):
 		image_view = self.manager.get_screen('image_view')
 		image_view.ids.view_img.source = src
@@ -35,6 +38,17 @@ class ImageScreen(Screen):
 		self.manager.current = 'image_view'
 		global idx
 		idx = image_path.index(src)
+
+	async def async_load_images(self, image_list):
+		content_grid = self.ids.layout
+		content_grid.clear_widgets()
+		for image in image_list:
+			preview = ImageCard()
+			img = Image(source=image, pos_hint={'center_x': .5, 'center_y': .5})
+			preview.add_widget(img)
+			Clock.schedule_once(lambda dt: content_grid.add_widget(preview))
+			await asynckivy.sleep(0.2)  # Lets Kivy process events
+
 	def change_content(self, tab):
 		content_grid = self.ids.layout
 		content_grid.clear_widgets()
@@ -45,22 +59,23 @@ class ImageScreen(Screen):
 			image_path = image_paths_saved
 		else:
 			return
-		for image in image_path:
-			preview = ImageCard()
-			img = Image(source=image, pos_hint={'center_x': .5, 'center_y': .5})
-			preview.add_widget(img)
-			content_grid.add_widget(preview)
+		# Start loading asynchronously
+		asynckivy.start(self.async_load_images(image_path))
+
 
 class ImageViewer(Screen):
+
 	def contract(self):
 		self.manager.transition = FallOutTransition()
 		self.manager.current = 'image_screen'
+
 	def next_img(self):
 		global idx
 		idx += 1
 		if idx >= len(image_path):
 			idx = len(image_path)-1
 		self.ids.view_img.source = image_path[idx]
+
 	def prev_img(self):
 		global idx
 		idx -= 1
@@ -80,6 +95,7 @@ class ImageCard(MDCard):
 
 
 class StatusSaverApp(MDApp):
+
 	def build(self):
 		Builder.load_file('StatusSaver.kv')
 		Window.clearcolor = (1, 1, 1, 1)

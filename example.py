@@ -1,3 +1,3 @@
 from Status import Status
 
-Status('video', '/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/6d8e41ef5d584c69b1a896b854010a54.mp4')
+Status('pics', '/storage/emulated/0/Android/media/com .whatsapp/WhatsApp/Media/.Statuses/9710bb38912e49c1a9bcaa2ba369a8a8.jpg')

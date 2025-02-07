@@ -9,7 +9,7 @@ class Status:
         self.VIDS = "/storage/emulated/0/Statuses/Videos"
         self.types = ['video', 'pics']
 
-        if path not in glob("/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*"):
+        if path not in glob("/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*") + glob("/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*"):
             raise FileNotFoundError(f"{path} - File not found among  Whatsapp Statuses")
         try:
             if file_type in self.types:

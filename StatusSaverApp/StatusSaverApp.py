@@ -1,32 +1,44 @@
+from kivy.uix.accordion import NumericProperty
+from kivy.uix.accordion import ObjectProperty
+from kivy.uix.accordion import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen, RiseInTransition, FallOutTransition
 from kivymd.uix.segmentedbutton import MDSegmentedButtonItem
+from kivy.uix.modalview import ModalView
+# from kivy.properties import StringProperty
+from kivy.graphics.texture import Texture
+from kivy.core.window import Window
 from kivymd.uix.card import MDCard
 from kivy.uix.image import Image
-from kivy.core.window import Window
-from kivy.graphics.texture import Texture
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivymd.app import MDApp
+from glob import glob
 import asynckivy
 import cv2
-from glob import glob
 
-# '''Change this back before push'''
-# Window.size = (400, 650)
-# image_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.jpg')
-# image_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Pics/*.jpg')
-# video_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.mp4')
-# video_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Vids/*.mp4')
+'''Change this back before push'''
+Window.size = (400, 650)
+image_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.jpg')
+image_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Pics/*.jpg')
+video_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.mp4')
+video_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Vids/*.mp4')
 
 # -----READ ME------- #
-#Leave the above declractions in the code since I need them to test the UI in my computer
+#Leave the above declaractions in the code since I need them to test the UI in my computer
 #I only use the phone for small adjustments
+
+### -----  TODO  ----- ###
+#	Figure out cause of the dual-popup and fix it, then enable autoplay
+#	Add saving ability for both images and videos
+#	Add ability to switch between videos
+#	Fix end-of-stream glitch
+
 # --------END--------#
 
-image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
-image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
-video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
-video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
+# image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
+# image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
+# video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
+# video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
 
 class MyScreenManager(ScreenManager):
 	pass
@@ -38,14 +50,6 @@ class HomeScreen(Screen):
 
 
 class ImageScreen(Screen):
-
-	def expand(self, src):
-		image_view = self.manager.get_screen('image_view')
-		image_view.ids.view_img.source = src
-		self.manager.transition = RiseInTransition()
-		self.manager.current = 'image_view'
-		global idx
-		idx = image_path.index(src)
 
 	async def async_load_images(self, image_list):
 		content_grid = self.ids.layout
@@ -70,15 +74,17 @@ class ImageScreen(Screen):
 		# Start loading asynchronously
 		asynckivy.start(self.async_load_images(image_path))
 
+	def expand(self, src):
+		image_view = self.manager.get_screen('image_view')
+		image_view.ids.view_img.source = src
+		self.manager.transition = RiseInTransition()
+		self.manager.current = 'image_view'
+		global idx
+		idx = image_path.index(src)
+
 
 class VideoScreen(Screen):
-
-	def expand(self, src):
-		pass
-	# 	video_view = self.manager.get_screen('video_view')
-	# 	video_view.ids.view_vid.source = src
-	# 	self.manager.transition = RiseInTransition()
-	# 	self.manager.current = 'video_view'
+	video_view = ObjectProperty()
 
 	def generate_thumbnail(self, video, timestamp = .2):
 		cap = cv2.VideoCapture(video)
@@ -99,17 +105,16 @@ class VideoScreen(Screen):
 		content_grid = self.ids.vid_layout
 		content_grid.clear_widgets()
 		added_video_ids = set()				
-		print(video_list)
 		for index, video in enumerate(video_list):	
 			video_id = index						
-			print(video)
 			if video_id in added_video_ids:			
 				continue							
 			thumbnail = Image(pos_hint={'center_x': .5, 'center_y': .5})
 			texture = self.generate_thumbnail(video)
 			if texture:
 				thumbnail.texture = texture
-			preview = ImageCard()
+			preview = VideoCard()
+			preview.vid_src = video
 			preview.add_widget(thumbnail)
 			duplicate_found = False					
 			for child in content_grid.children:
@@ -134,6 +139,60 @@ class VideoScreen(Screen):
 		# Start loading asynchronously
 		asynckivy.start(self.async_load_thumbnails(video_path))
 		self.ids.vid_layout.clear_widgets()
+
+	def expand(self, src):
+		self.video_view = VideoPopup()
+		if self.video_view.video_source != src:
+			self.video_view.video_source = src  # Change source only if needed
+		self.video_view.open()
+
+
+class VideoPopup(ModalView):
+	video_source = StringProperty()
+	progress = NumericProperty(0)
+	start_time = 1
+
+	def __init__(self, **kwargs):
+		super(VideoPopup, self).__init__(**kwargs)
+		self.bind(on_open=self._bind_video)
+		self.video_length = 1
+
+	def _bind_video(self, *args):
+		video = self.ids.video
+		video.bind(on_duration = self.update_duration)
+		video.bind(on_position = self.update_progress)
+		Clock.schedule_interval(self.update_progress_bar, .1)
+
+	def update_duration(self, instance, value):
+		self.video_length = value if value > 0 else 1
+
+	def update_progress(self, instance, value):
+		self.progress = (value / self.video_length) * 100
+
+	def update_progress_bar(self, dt):
+		video = self.ids.video
+		if video.duration > 0:
+			self.progress = (video.position / video.duration) * 100
+
+	def play_pause(self):
+		video = self.ids.video
+		btn_icon = self.ids.icon_play
+		if video.state == 'play':
+			video.state = 'pause'
+		else:
+			video.state = 'play'
+	
+	def play_next(self):
+		pass
+
+	def play_previous(self):
+		pass
+
+	def close_popup(self):
+		self.dismiss()
+
+	def end_of_video(self, instance):
+		instance.state = 'stop'
 
 
 class ImageViewer(Screen):
@@ -164,6 +223,10 @@ class CustomSegment(MDSegmentedButtonItem):
 
 class ImageCard(MDCard):
 	pass
+
+
+class VideoCard(MDCard):
+	vid_src = StringProperty()
 
 
 

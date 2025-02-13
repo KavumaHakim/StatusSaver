@@ -4,7 +4,6 @@ from kivy.uix.accordion import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen, RiseInTransition, FallOutTransition
 from kivymd.uix.segmentedbutton import MDSegmentedButtonItem
 from kivy.uix.modalview import ModalView
-# from kivy.properties import StringProperty
 from kivy.graphics.texture import Texture
 from kivy.core.window import Window
 from kivymd.uix.card import MDCard
@@ -16,29 +15,29 @@ from glob import glob
 import asynckivy
 import cv2
 
-'''Change this back before push'''
-Window.size = (400, 650)
-image_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.jpg')
-image_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Pics/*.jpg')
-video_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.mp4')
-video_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Vids/*.mp4')
+# '''Change this back before push'''
+# Window.size = (400, 650)
+# image_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.jpg')
+# image_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Pics/*.jpg')
+# video_paths_all = glob('C:/Users/user/Desktop/my_folder/.Statuses/*.mp4')
+# video_paths_saved = glob('C:/Users/user/Desktop/my_folder/Saved/Vids/*.mp4')
 
 # -----READ ME------- #
 #Leave the above declaractions in the code since I need them to test the UI in my computer
 #I only use the phone for small adjustments
 
 ### -----  TODO  ----- ###
-#	Figure out cause of the dual-popup and fix it, then enable autoplay
-#	Add saving ability for both images and videos
 #	Add ability to switch between videos
+#	Add saving ability for both images and videos
+#	Enable bugless autoplay
 #	Fix end-of-stream glitch
 
 # --------END--------#
 
-# image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
-# image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
-# video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
-# video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
+image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
+image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
+video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
+video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
 
 class MyScreenManager(ScreenManager):
 	pass
@@ -75,16 +74,14 @@ class ImageScreen(Screen):
 		asynckivy.start(self.async_load_images(image_path))
 
 	def expand(self, src):
-		image_view = self.manager.get_screen('image_view')
+		global image_view
 		image_view.ids.view_img.source = src
-		self.manager.transition = RiseInTransition()
-		self.manager.current = 'image_view'
+		image_view.open()
 		global idx
 		idx = image_path.index(src)
 
 
 class VideoScreen(Screen):
-	video_view = ObjectProperty()
 
 	def generate_thumbnail(self, video, timestamp = .2):
 		cap = cv2.VideoCapture(video)
@@ -141,10 +138,12 @@ class VideoScreen(Screen):
 		self.ids.vid_layout.clear_widgets()
 
 	def expand(self, src):
-		self.video_view = VideoPopup()
-		if self.video_view.video_source != src:
-			self.video_view.video_source = src  # Change source only if needed
-		self.video_view.open()
+		global video_view
+		if video_view.video_source != src:
+			video_view.video_source = src  # Change source only if needed
+		video_view.open()
+		global idx
+		idx = video_path.index(src)
 
 
 class VideoPopup(ModalView):
@@ -195,25 +194,28 @@ class VideoPopup(ModalView):
 		instance.state = 'stop'
 
 
-class ImageViewer(Screen):
+class ImageViewer(ModalView):
+	image_source = StringProperty()
 
 	def contract(self):
-		self.manager.transition = FallOutTransition()
-		self.manager.current = 'image_screen'
+		self.dismiss()
 
 	def next_img(self):
 		global idx
 		idx += 1
 		if idx >= len(image_path):
 			idx = len(image_path)-1
-		self.ids.view_img.source = image_path[idx]
+		self.image_source = image_path[idx]
 
 	def prev_img(self):
 		global idx
 		idx -= 1
 		if idx < 0:
 			idx = 0
-		self.ids.view_img.source = image_path[idx]
+		self.image_source = image_path[idx]
+
+	def save_img(self):
+		pass
 
 
 class CustomSegment(MDSegmentedButtonItem):
@@ -239,11 +241,15 @@ class StatusSaverApp(MDApp):
 		home_screen = HomeScreen(name = 'home')
 		image_screen = ImageScreen(name = 'image_screen')
 		video_screen = VideoScreen(name = 'video_screen')
-		image_view = ImageViewer(name = 'image_view')
+		global image_view
+		global video_view
+		image_view = ImageViewer()
+		video_view = VideoPopup()
+		# image_view = ImageViewer(name = 'image_view')
 		my_manager.add_widget(home_screen)
 		my_manager.add_widget(image_screen)
 		my_manager.add_widget(video_screen)
-		my_manager.add_widget(image_view)
+		# my_manager.add_widget(image_view)
 		my_manager.current = 'home'
 		return my_manager
 

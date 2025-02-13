@@ -1,3 +1,4 @@
+from kivy.uix.video import Video
 from kivy.uix.accordion import NumericProperty
 from kivy.uix.accordion import ObjectProperty
 from kivy.uix.accordion import StringProperty
@@ -8,6 +9,7 @@ from kivy.graphics.texture import Texture
 from kivy.core.window import Window
 from kivymd.uix.card import MDCard
 from kivy.uix.image import Image
+from kivy.uix.video import Video
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivymd.app import MDApp
@@ -27,10 +29,7 @@ import cv2
 #I only use the phone for small adjustments
 
 ### -----  TODO  ----- ###
-#	Add ability to switch between videos
 #	Add saving ability for both images and videos
-#	Enable bugless autoplay
-#	Fix end-of-stream glitch
 
 # --------END--------#
 
@@ -38,6 +37,7 @@ image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/
 image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
 video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
 video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
+
 
 class MyScreenManager(ScreenManager):
 	pass
@@ -154,13 +154,23 @@ class VideoPopup(ModalView):
 	def __init__(self, **kwargs):
 		super(VideoPopup, self).__init__(**kwargs)
 		self.bind(on_open=self._bind_video)
+		self.bind(on_pre_dismiss=self._close_video)
 		self.video_length = 1
 
 	def _bind_video(self, *args):
 		video = self.ids.video
+		video.load_first = True
+		video.state = "play"
 		video.bind(on_duration = self.update_duration)
 		video.bind(on_position = self.update_progress)
 		Clock.schedule_interval(self.update_progress_bar, .1)
+	
+	def _close_video(self, *args):
+		video = self.ids.video
+		if video.state == 'play':
+			video.state == 'stop'
+		video.load_first = True
+		video.unload()
 
 	def update_duration(self, instance, value):
 		self.video_length = value if value > 0 else 1
@@ -172,6 +182,8 @@ class VideoPopup(ModalView):
 		video = self.ids.video
 		if video.duration > 0:
 			self.progress = (video.position / video.duration) * 100
+		if self.progress >= 98:
+			self.ids.video._on_eos()
 
 	def play_pause(self):
 		video = self.ids.video
@@ -182,16 +194,25 @@ class VideoPopup(ModalView):
 			video.state = 'play'
 	
 	def play_next(self):
-		pass
+		global idx
+		idx += 1
+		if idx >= len(video_path):
+			idx = len(video_path)-1
+		self.video_source = video_path[idx]
+		self.load_first = False
+		self.ids.video.state = 'play'
 
 	def play_previous(self):
+		global idx
+		idx -= 1
+		if idx < 0:
+			idx = 0
+		self.video_source = video_path[idx]
+		self.load_first = False
+		self.ids.video.state = 'play'
+
+	def save_video(self):
 		pass
-
-	def close_popup(self):
-		self.dismiss()
-
-	def end_of_video(self, instance):
-		instance.state = 'stop'
 
 
 class ImageViewer(ModalView):
@@ -216,6 +237,22 @@ class ImageViewer(ModalView):
 
 	def save_img(self):
 		pass
+
+
+
+class StatusVideo(Video):
+	load_first = True
+
+	def _on_load(self, *largs):
+		super()._on_load(*largs)
+		self.seek(.001)
+		if self.load_first:
+			self.state = 'pause'
+			self.load_first = False
+
+	def _on_eos(self, *largs):
+		super()._on_eos(*largs)
+		self.parent.parent.play_next()
 
 
 class CustomSegment(MDSegmentedButtonItem):
@@ -245,11 +282,9 @@ class StatusSaverApp(MDApp):
 		global video_view
 		image_view = ImageViewer()
 		video_view = VideoPopup()
-		# image_view = ImageViewer(name = 'image_view')
 		my_manager.add_widget(home_screen)
 		my_manager.add_widget(image_screen)
 		my_manager.add_widget(video_screen)
-		# my_manager.add_widget(image_view)
 		my_manager.current = 'home'
 		return my_manager
 

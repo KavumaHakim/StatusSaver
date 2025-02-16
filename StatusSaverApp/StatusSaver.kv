@@ -29,6 +29,7 @@
 				size_hint_y: .325
 				ripple_behavior: True
 				md_bg_color: hex('#e0e0e0')
+				on_release: root.change_screen('video_screen')
 				Image:
 					source: 'video-play-icon.png'
 					size_hint: (.5, .5)
@@ -37,7 +38,7 @@
 				size_hint_y: .325
 				ripple_behavior: True
 				md_bg_color: hex('#e0e0e0')
-				on_press: root.picture()
+				on_release: root.change_screen('image_screen')
 				Image:
 					source: 'green_pic_icon2.png'
 					size_hint: (.5, .5)
@@ -60,33 +61,46 @@
 		orientation: 'vertical'
 		padding: 30
 		spacing: 30
-		MDCard:
-			size_hint: (None, None)
+		MDSegmentedButton:
+			multiselect: False
+			type: 'large'
+			size_hint_x: .6
+			size_hint_y: None
 			height: 80
-			width: 400
 			pos_hint: {'center_x': .5}
-			radius: 40
-			style: 'outlined'
-			theme_bg_color: 'Custom'
-			md_bg_color: (1, 1, 1, 0)
-			MDCard:
-				radius: (40, 0, 0, 40)
-				style: 'filled'
-				theme_bg_color: 'Custom'
-				md_bg_color: hex('#05b025')
-				Label:
+			opening_icon_duration: 0
+			hiding_icon_duration: 0
+			CustomSegment:
+				selected_color: hex('#05b025')
+				radius: [30, 0, 0, 30]
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.all.color = hex('#ffffff')
+					root.ids.saved.color = hex('#05b025')
+					root.change_content('all_tab')
+				MDSegmentButtonLabel:
+					id: all
 					text: 'All'
-					color: (1, 1, 1, 1)
 					bold: True
-			MDCard:
-				radius: (0, 40, 40, 0)
-				style: 'filled'
-				theme_bg_color: 'Custom'
-				md_bg_color: (1, 1, 1, 0)
-				Label:
-					text: 'Saved'
+					selected_icon: ""
+					theme_text_color: 'Custom'
 					color: hex('#05b025')
+			CustomSegment:
+				selected_color: hex('#05b025')
+				radius: [0, 30, 30, 0]
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.saved.color = hex('#ffffff')
+					root.ids.all.color = hex('#05b025')
+					root.change_content('saved_tab')
+				MDSegmentButtonLabel:
+					id: saved
+					text: 'Saved'
 					bold: True
+					theme_text_color: 'Custom'
+					color: hex('#05b025')
 		RecycleView:
 			id: view_port
 			do_scroll_x: False
@@ -99,14 +113,232 @@
 				pos_hint: {'center_x': .5, 'center_y': .5}
 				height: self.minimum_height
 
+<VideoScreen>:
+	BoxLayout:
+		orientation: 'vertical'
+		padding: 30
+		spacing: 30
+		MDSegmentedButton:
+			multiselect: False
+			type: 'large'
+			size_hint_x: .6
+			size_hint_y: None
+			height: 80
+			pos_hint: {'center_x': .5}
+			opening_icon_duration: 0
+			hiding_icon_duration: 0
+			CustomSegment:
+				selected_color: hex('#05b025')
+				radius: [30, 0, 0, 30]
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.all.color = hex('#ffffff')
+					root.ids.saved.color = hex('#05b025')
+					root.change_content('all_tab')
+				MDSegmentButtonLabel:
+					id: all
+					text: 'All'
+					bold: True
+					selected_icon: ""
+					theme_text_color: 'Custom'
+					color: hex('#05b025')
+			CustomSegment:
+				selected_color: hex('#05b025')
+				radius: [0, 30, 30, 0]
+				theme_line_color: 'Custom'
+				line_color: hex('#05b025')
+				on_state:
+					root.ids.saved.color = hex('#ffffff')
+					root.ids.all.color = hex('#05b025')
+					root.change_content('saved_tab')
+				MDSegmentButtonLabel:
+					id: saved
+					text: 'Saved'
+					bold: True
+					theme_text_color: 'Custom'
+					color: hex('#05b025')
+		RecycleView:
+			id: view_port
+			do_scroll_x: False
+			GridLayout:
+				id: vid_layout
+				cols: 2
+				padding: (15, 30)
+				spacing: 30
+				size_hint_y: None
+				pos_hint: {'center_x': .5, 'center_y': .5}
+				height: self.minimum_height
 
-# <MyScreenManager>:
-# 	HomeScreen:
-# 		# id: home_screen
-# 		name: 'home'
-# 	ImageScreen:
-# 		# id: images
-# 		name: 'image_screen'
+
+<ImageViewer>:
+	size_hint: (1, 1)
+	auto_dismiss: True
+	radius: 10
+	overlay_color: (.5, .5, .5, .3)
+	background_color: (1, 1, 1, .9)
+	background: ''
+	RelativeLayout:
+		padding: [10, 10, 10, 10]
+		Image:
+			id: view_img
+			size_hint: (1, 1)
+			source: root.image_source
+		Widget: 
+			pos_hint: {'bottom': 1, 'center_x': .5}
+			size_hint: 1, None
+			height: 80
+			canvas:
+				Color:
+					rgba: (0, 0, 0, .4)
+				RoundedRectangle: 
+					pos: self.pos
+					size: self.size
+					radius: [0, 0, 0, 0]
+		MDButton:
+			style: 'text'
+			radius: 0
+			size_hint: (.2, .2)
+			pos_hint: {'left': 1, 'top': 1}
+			on_release: root.contract()
+			MDButtonIcon:
+				icon: 'arrow-left'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		MDButton:
+			id: previous_img_button
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .3}
+			radius: 0
+			on_release: root.prev_img()
+			MDButtonIcon:
+				icon: 'skip-previous'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		MDButton:
+			id: download_img_btn
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .5}
+			radius: 0
+			on_release: root.save_img()
+			MDButtonIcon:
+				icon: 'download'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		MDButton:
+			id: next_img_button
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .7}
+			radius: 0
+			on_release: root.next_img()
+			MDButtonIcon:
+				icon: 'skip-next'
+				color: (0, 1, 0, 1)
+
+
+<VideoPopup>:
+	size_hint: (1, 1)
+	auto_dismiss: True
+	radius: 10
+	overlay_color: (.5, .5, .5, .3)
+	background_color: (1, 1, 1, .9)
+	background: ''
+	RelativeLayout:
+		padding: [10, 10, 10, 10]
+		StatusVideo:
+			id: video
+			size_hint: (1, 1)
+			source: root.video_source
+			state: 'play'
+		MDButton:
+			style: 'text'
+			radius: 0
+			size_hint: (.15, .15)
+			pos_hint: {'left': 1, 'top': 1}
+			on_release: root.dismiss()
+			MDButtonIcon:
+				icon: 'arrow-left'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		ProgressBar:
+			canvas.before:
+				Color: 
+					rgba: (.8, 1, .8, 1)
+				Rectangle: 
+					pos: self.pos
+					size: self.size
+			canvas: 
+				Color: 
+					rgba: (0, 1, 0, 1)
+				Rectangle: 
+					pos: self.pos
+					size: (self.width*(self.value/float(self.max)), self.height)
+			id: progress_bar
+			max: 100
+			value: root.progress
+			pos_hint: {'top': .97, 'center_x': .5}
+			size_hint_x: .7
+			size_hint_y: None
+			height: 4
+			
+		MDButton:
+			style: 'text'
+			radius: 0
+			size_hint: (.15, .15)
+			pos_hint: {'right': 1, 'top': 1}
+			on_release: root.save_video()
+			MDButtonIcon:
+				icon: 'download'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		Widget: 
+			pos_hint: {'bottom': 1, 'center_x': .5}
+			size_hint: 1, None
+			height: 80
+			canvas:
+				Color:
+					rgba: (0, 0, 0, .4)
+				RoundedRectangle: 
+					pos: self.pos
+					size: self.size
+					radius: [0, 0, 0, 0]
+		MDButton:
+			id: play_previous_button
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .3}
+			radius: 0
+			on_release: root.play_previous()
+			MDButtonIcon:
+				icon: 'skip-previous'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		MDButton:
+			id: play_pause_button
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .5}
+			radius: 0
+			on_release: root.play_pause()
+			MDButtonIcon:
+				id: icon_play
+				icon: 'play' if video.state=='pause' else 'pause'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
+		MDButton:
+			id: play_next_button
+			style: 'text'
+			size_hint: (.2, .2)
+			pos_hint: {'bottom': 1, 'center_x': .7}
+			radius: 0
+			on_release: root.play_next()
+			MDButtonIcon:
+				icon: 'skip-next'
+				color: (0, 1, 0, 1)
+				pos_hint: {'center_x': .5, 'center_y': .5}
 
 
 <ImageCard>:
@@ -114,4 +346,17 @@
 	height: 300
 	style: 'filled'
 	theme_bg_color: 'Custom'
-	md_bg_color: (0, 1, 0, .1)
+	md_bg_color: (0, 0, 0, .05)
+	on_release:
+		src = self.children[0].source
+		self.parent.parent.parent.parent.expand(src)
+
+<VideoCard>:
+	size_hint_y: None
+	height: 300
+	style: 'filled'
+	theme_bg_color: 'Custom'
+	md_bg_color: (0, 0, 0, .05)
+	on_release:
+		src = self.vid_src
+		self.parent.parent.parent.parent.expand(src)

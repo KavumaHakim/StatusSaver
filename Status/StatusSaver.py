@@ -8,6 +8,9 @@ class Status:
         self.PICS = "/storage/emulated/0/Statuses/Pics"
         self.VIDS = "/storage/emulated/0/Statuses/Videos"
         self.types = ['video', 'pics']
+
+        if path not in glob("/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*") + glob("/sdcard/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/*"):
+            raise FileNotFoundError(f"{path} - File not found among  Whatsapp Statuses")
         try:
             if file_type in self.types:
                 if file_type == "video":
@@ -23,7 +26,7 @@ class Status:
                 with open(new_file_path, "wb") as f:
                     f.write(video)
             else:
-                raise ValueError(f"{file_type} - Not known: valid values are 'video', 'pics', 'all'")
+                raise ValueError(f"{file_type} - Not known: valid values are 'video', 'pics'")
         except FileNotFoundError :
             if "/storage/emulated/0/Statuses" in self.ANDROID:
                 print("Statuses folder Exists")
@@ -34,7 +37,7 @@ class Status:
                 os.makedirs("/sdcard/Statuses/Videos")
             Status(file_type, path)
 
-if __name__ == "__main--":
+if __name__ == "__main__":
     print("Hola!, Try running the terminal version instead!")
 
     

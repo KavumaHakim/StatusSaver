@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Status"
+version = "1.0.0"
+
+dependencies = [
+    "tqdm"
+]
+
+[project.scripts]
+Status = "Status.__main__:main"

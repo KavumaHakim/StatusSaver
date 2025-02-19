@@ -1,10 +1,8 @@
-#!/data/data/com.termux/files/usr/bin/python
-from glob import glob
 from Status import Status
-import datetime
-from tqdm import tqdm
-import sys
+from glob import glob
 import os
+import sys
+from tqdm import tqdm
 banner = '''
 ░██████╗ ████████╗ ░█████╗░ ████████╗ ██╗░░░██╗ ░██████╗
 ██╔════╝ ╚══██╔══╝ ██╔══██╗ ╚══██╔══╝ ██║░░░██║ ██╔════╝
@@ -33,7 +31,12 @@ def main(c: int = 0) -> None:
     print("3. Both")
     print("4. Exit")
     n = 1
-    choice = c
+    args = sys.argv
+    if (len(args) == 2) and (args[1] in ["1","2","3"]):
+        choice = args[1]
+    else:
+        choice = 0
+        
     while n:
         if choice == 0:
             choice = input('Enter choice: ')
@@ -63,9 +66,6 @@ def main(c: int = 0) -> None:
         print('Thank you for Using status saver')
         if input('Save sth else? y/n > ').lower() == 'y':
             main()
-            
+
 if __name__ == "__main__":
-    try:
-        main(sys.argv[1])
-    except:
         main()

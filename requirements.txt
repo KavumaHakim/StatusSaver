@@ -2,4 +2,3 @@ kivy>=2.0.0
 kivymd>=2.0.0
 tqdm
 opencv-python
-

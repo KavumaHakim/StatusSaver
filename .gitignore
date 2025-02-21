@@ -3,3 +3,4 @@ Status/__pycache__/
 .venv/
 .vscode/*
 .idea
+StatusSaverApp/.buildozer

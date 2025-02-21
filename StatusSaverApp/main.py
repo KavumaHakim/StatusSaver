@@ -35,9 +35,9 @@ from Status import Status
 # --------END--------#
 
 image_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.jpg')
-image_paths_saved = glob('/storage/emulated/0/Statuses/*.jpg')
+image_paths_saved = glob('/storage/emulated/0/Statuses/Pics/*.jpg')
 video_paths_all = glob('/storage/emulated/0/Android/media/com.whatsapp/Whatsapp/Media/.Statuses/*.mp4')
-video_paths_saved = glob('/storage/emulated/0/Statuses/*.mp4')
+video_paths_saved = glob('/storage/emulated/0/Statuses/Videos/*.mp4')
 
 
 class MyScreenManager(ScreenManager):
@@ -273,7 +273,7 @@ class VideoCard(MDCard):
 class StatusSaverApp(MDApp):
 
 	def build(self):
-		Builder.load_file('StatusSaver.kv')
+		Builder.load_file('main.kv')
 		Window.clearcolor = (1, 1, 1, 1)
 		my_manager = MyScreenManager()
 		home_screen = HomeScreen(name = 'home')

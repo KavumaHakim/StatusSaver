@@ -1,8 +1,7 @@
 from glob import glob
 import os
 import datetime
-import sys
-from tqdm import tqdm
+
 
 class Status:
     def __init__(self,file_type:str ="video", path:str = ''):

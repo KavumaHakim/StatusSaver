@@ -16,6 +16,7 @@ from kivymd.app import MDApp
 from glob import glob
 import asynckivy
 import cv2
+from Status import Status
 
 # '''Change this back before push'''
 # Window.size = (400, 650)
@@ -212,7 +213,7 @@ class VideoPopup(ModalView):
 		self.ids.video.state = 'play'
 
 	def save_video(self):
-		pass
+		Status(file_type="video", file_path=self.video_source)
 
 
 class ImageViewer(ModalView):
@@ -236,7 +237,7 @@ class ImageViewer(ModalView):
 		self.image_source = image_path[idx]
 
 	def save_img(self):
-		pass
+		Status(file_type="pics", file_path=self.image_source)
 
 
 
